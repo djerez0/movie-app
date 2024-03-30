@@ -1,6 +1,6 @@
 "use client";
 
-import {AppBar, IconButton, Link, Toolbar} from "@mui/material";
+import {AppBar, IconButton, Toolbar} from "@mui/material";
 import {FC, useEffect, useState} from "react";
 import {navbar, navbarContainer, navbarIconButton, navbarRow} from "./styles";
 import {SoftBox} from "../soft_box.ts";
@@ -9,11 +9,12 @@ import {usePathname} from "next/navigation";
 import {IconBrandGithub, IconHeartFilled, IconHome2} from "@tabler/icons-react";
 import {SoftTypography} from "../soft_typography";
 import {setTransparentNavbar, useSoftUIController} from "app/context";
+import Link from "next/link";
 
 export const Navbar: FC<NavbarProps> = ({light, isMini}) => {
     const route = usePathname().split("/").slice(1);
     const [controller, dispatch] = useSoftUIController();
-    const {transparentNavbar, fixedNavbar, absoluteNavbar: absolute} = controller;
+    const {transparentNavbar, fixedNavbar, absoluteNavbar: absolute, session_id} = controller;
     const [navbarType, setNavbarType] = useState<"sticky" | "static">("sticky");
     const pathname = usePathname();
 
@@ -60,28 +61,40 @@ export const Navbar: FC<NavbarProps> = ({light, isMini}) => {
                 </SoftBox>
                 <SoftBox sx={(theme) => navbarRow(theme, {isMini})}>
                     <SoftBox color={light ? "white" : "inherit"}>
-                        <IconButton size="small" color="error" sx={navbarIconButton}>
-                            <IconHeartFilled />
-                            <SoftTypography
-                                variant="button"
-                                fontWeight="medium"
-                                color={light ? "white" : "dark"}
+                        {session_id && (
+                            <IconButton
+                                LinkComponent={Link}
+                                href={`/favoritos?session_id=${session_id}`}
+                                size="small"
+                                color="error"
+                                sx={navbarIconButton}
                             >
-                                Mis Favoritos
-                            </SoftTypography>
-                        </IconButton>
-                        <Link href="/authentication/sign-in/basic">
-                            <IconButton sx={navbarIconButton} size="small">
-                                <IconBrandGithub />
+                                <IconHeartFilled />
                                 <SoftTypography
                                     variant="button"
                                     fontWeight="medium"
                                     color={light ? "white" : "dark"}
                                 >
-                                    Source Code
+                                    Mis Favoritos
                                 </SoftTypography>
                             </IconButton>
-                        </Link>
+                        )}
+                        <IconButton
+                            LinkComponent="a"
+                            href="https://github.com/djerez0/movie-app"
+                            target="_blank"
+                            sx={navbarIconButton}
+                            size="small"
+                        >
+                            <IconBrandGithub />
+                            <SoftTypography
+                                variant="button"
+                                fontWeight="medium"
+                                color={light ? "white" : "dark"}
+                            >
+                                Source Code
+                            </SoftTypography>
+                        </IconButton>
                     </SoftBox>
                 </SoftBox>
             </Toolbar>

@@ -1,40 +1,41 @@
 "use client";
 
-import {Dispatch, createContext, useContext, useMemo, useReducer} from "react";
+import {usePathname} from "next/navigation";
+import {Dispatch, createContext, useContext, useEffect, useMemo, useReducer} from "react";
+import {reducer} from "./reducer";
+import {
+    setAbsoluteNavbar,
+    setFixedNavbar,
+    setTransparentNavbar,
+    setSessionId
+} from "./dispatch_function";
 
 const SoftUI = createContext<[SoftUIModel, Dispatch<CountAction>] | null>(null);
 
 SoftUI.displayName = "SoftUI";
 
-function reducer(state: SoftUIModel, action: CountAction): SoftUIModel {
-    switch (action.type) {
-        case "TRANSPARENT_NAVBAR": {
-            return {...state, transparentNavbar: action.payload};
-        }
-        case "FIXED_NAVBAR": {
-            return {...state, fixedNavbar: action.payload};
-        }
-        case "ABSOLUTE_NAVBAR": {
-            return {...state, absoluteNavbar: action.payload};
-        }
-        default: {
-            throw new Error(`Unhandled action type: ${action.type}`);
-        }
-    }
-}
-
 function SoftUIControllerProvider({children}: {children: React.ReactNode}) {
     const initialState: SoftUIModel = {
         transparentNavbar: false,
         fixedNavbar: true,
-        absoluteNavbar: false
+        absoluteNavbar: false,
+        session_id: ""
     };
     const [controller, dispatch] = useReducer<typeof reducer>(reducer, initialState);
+    const pathname = usePathname();
 
-    const value = useMemo(() => [controller, dispatch], [controller, dispatch]) as unknown as [
+    const value = useMemo(() => [{...controller}, dispatch], [controller, dispatch]) as unknown as [
         SoftUIModel,
         Dispatch<CountAction>
     ];
+
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth"
+        });
+    }, [pathname]);
 
     return <SoftUI.Provider value={value}>{children}</SoftUI.Provider>;
 }
@@ -50,20 +51,11 @@ function useSoftUIController() {
     return context;
 }
 
-const setTransparentNavbar = (dispatch: Dispatch<CountAction>, payload: CountAction["payload"]) => {
-    dispatch({type: "TRANSPARENT_NAVBAR", payload});
-};
-const setFixedNavbar = (dispatch: Dispatch<CountAction>, payload: CountAction["payload"]) => {
-    dispatch({type: "FIXED_NAVBAR", payload});
-};
-const setAbsoluteNavbar = (dispatch: Dispatch<CountAction>, payload: CountAction["payload"]) => {
-    dispatch({type: "ABSOLUTE_NAVBAR", payload});
-};
-
 export {
     SoftUIControllerProvider,
     useSoftUIController,
-    setTransparentNavbar,
+    setAbsoluteNavbar,
     setFixedNavbar,
-    setAbsoluteNavbar
+    setTransparentNavbar,
+    setSessionId
 };

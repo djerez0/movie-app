@@ -10,7 +10,7 @@ export const navbar = (theme: Theme, ownerState: NavbarOwnerStyles) => {
     const {borderRadius} = borders;
 
     return {
-        mx: 5,
+        mx: absolute ? 2 : 5,
         boxShadow: transparentNavbar ? "none" : navbarBoxShadow,
         backdropFilter: transparentNavbar ? "none" : `saturate(200%) blur(${pxToRem(30)})`,
         backgroundColor: transparentNavbar
@@ -39,7 +39,9 @@ export const navbar = (theme: Theme, ownerState: NavbarOwnerStyles) => {
         paddingBottom: pxToRem(8),
         paddingRight: absolute ? pxToRem(8) : 0,
         paddingLeft: absolute ? pxToRem(16) : 0,
-        width: absolute ? "97%" : "auto",
+        width: "auto",
+        left: 1,
+        right: 1,
 
         "& > *": {
             transition: transitions.create("all", {

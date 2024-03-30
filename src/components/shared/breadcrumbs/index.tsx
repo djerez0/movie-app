@@ -4,7 +4,7 @@ import {Breadcrumbs as MuiBreadcrumbs} from "@mui/material";
 import {SoftTypography} from "../soft_typography";
 import {FC} from "react";
 
-export const Breadcrumbs: FC<BreadcrumbsProps> = ({icon, title, route, light}) => {
+export const Breadcrumbs: FC<BreadcrumbsProps> = ({icon, title, route, light = false}) => {
     const routes = route.slice(0, -1);
 
     return (
@@ -63,8 +63,4 @@ export const Breadcrumbs: FC<BreadcrumbsProps> = ({icon, title, route, light}) =
             </SoftTypography>
         </SoftBox>
     );
-};
-
-Breadcrumbs.defaultProps = {
-    light: false
 };

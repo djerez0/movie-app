@@ -5,6 +5,10 @@ const nextConfig = {
             {
                 protocol: "https",
                 hostname: "image.tmdb.org"
+            },
+            {
+                protocol: "https",
+                hostname: "www.kindpng.com"
             }
         ]
     },
@@ -12,7 +16,7 @@ const nextConfig = {
         return [
             {
                 source: "/",
-                destination: "/peliculas",
+                destination: "/peliculas?page=1",
                 permanent: true
             }
         ];
