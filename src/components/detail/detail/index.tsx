@@ -64,7 +64,7 @@ export const DetailComponent: FC<
                 <Grid item lg={6}>
                     <Grid container>
                         <Grid item sm={6} xs={12}>
-                            <SoftBox width={300} mt={{xs: 3, sm: 0}}>
+                            <SoftBox width={300} mt={{xs: 3, sm: 0}} ml={{sm: 3, xs: 0}}>
                                 <StatisticsCard
                                     title={{text: "Presupuesto", fontWeight: "bold"}}
                                     count={formatCurrency(budget)}
